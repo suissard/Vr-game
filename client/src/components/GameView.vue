@@ -4,7 +4,8 @@
     <h1>{{ game.name }}</h1>
     <p>{{ playerCount }} players online</p>
 
-    <div class="game-container">
+    <Maze v-if="game.id === 11" />
+    <div v-else class="game-container">
       <div class="game-area">
         <div class="player self" :style="{ transform: `translate(${position.x}px, ${position.y}px)` }">You</div>
         <div
@@ -31,6 +32,7 @@
 
 <script setup>
 import { ref, defineProps, onMounted, onUnmounted, computed } from 'vue';
+import Maze from './Maze.vue';
 import { socket } from '../socket';
 
 const props = defineProps({
