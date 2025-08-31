@@ -4,6 +4,7 @@ const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const { games } = require('./games');
+const { generateMaze, solveMaze } = require('./maze');
 
 // Add CORS configuration to allow connections from the client
 const io = new Server(server, {
@@ -73,6 +74,15 @@ io.on('connection', (socket) => {
       io.to(socket.gameId).emit('chat message', msg);
       console.log(`Message in room ${socket.gameId} from ${socket.id}: ${msg.text}`);
     }
+  });
+
+  // Event for generating and sending a maze
+  socket.on('get maze', () => {
+    const width = 21;
+    const height = 21;
+    const maze = generateMaze(width, height);
+    const solution = solveMaze(maze);
+    socket.emit('maze data', { maze, solution });
   });
 
   // Event for handling player position updates

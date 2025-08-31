@@ -9,6 +9,7 @@ const games = [
   { id: 8, name: 'Chrono-Clash', players: 0 },
   { id: 9, 'name': 'Helios-Heist', players: 0 },
   { id: 10, name: 'Rift-Racers', players: 0 },
+  { id: 11, name: '3D Maze', players: 0 },
 ];
 
 module.exports = { games };
