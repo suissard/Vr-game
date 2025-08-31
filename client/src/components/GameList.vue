@@ -10,7 +10,22 @@
 </template>
 
 <script setup>
-import { games } from '../games';
+import { ref, onMounted, onUnmounted } from 'vue';
+import { socket } from '../socket';
+
+const games = ref([]);
+
+onMounted(() => {
+  socket.emit('get games');
+
+  socket.on('games list', (gamesList) => {
+    games.value = gamesList;
+  });
+});
+
+onUnmounted(() => {
+  socket.off('games list');
+});
 </script>
 
 <style scoped>
