@@ -3,7 +3,16 @@ const app = express();
 const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
-const { games } = require('./games');
+const fs = require('fs');
+const path = require('path');
+
+const gamesDir = path.join(__dirname, '../games');
+const gameSlugs = fs.readdirSync(gamesDir);
+
+const games = gameSlugs.map((slug, index) => {
+  const name = slug.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+  return { id: index + 1, name, players: 0 };
+});
 
 // Add CORS configuration to allow connections from the client
 const io = new Server(server, {
@@ -13,9 +22,7 @@ const io = new Server(server, {
   }
 });
 
-app.get('/', (req, res) => {
-  res.send('<h1>Socket.IO Server is running</h1>');
-});
+app.use(express.static(path.join(__dirname, '../client/dist')));
 
 const gameRooms = {}; // Stores room data, e.g., { gameId: { players: Set() } }
 
