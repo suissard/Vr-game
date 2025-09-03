@@ -62,8 +62,6 @@ function sendMessage() {
 }
 
 onMounted(() => {
-  socket.emit('join', props.game.id);
-
   socket.on('player count', (count) => {
     playerCount.value = count;
   });
@@ -87,7 +85,6 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-  socket.emit('leave');
   socket.off('player count');
   socket.off('chat message');
   socket.off('player positions');

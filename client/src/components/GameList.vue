@@ -2,7 +2,7 @@
   <div>
     <h1>Game Hub</h1>
     <ul>
-      <li v-for="game in games" :key="game.id" @click="$emit('select-game', game.id)">
+      <li v-for="game in gamesStore.games" :key="game.id" @click="$emit('select-game', game.id)">
         {{ game.name }} - {{ game.players }} players online
       </li>
     </ul>
@@ -10,22 +10,9 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
-import { socket } from '../socket';
+import { useGamesStore } from '../stores/games';
 
-const games = ref([]);
-
-onMounted(() => {
-  socket.emit('get games');
-
-  socket.on('games list', (gamesList) => {
-    games.value = gamesList;
-  });
-});
-
-onUnmounted(() => {
-  socket.off('games list');
-});
+const gamesStore = useGamesStore();
 </script>
 
 <style scoped>
